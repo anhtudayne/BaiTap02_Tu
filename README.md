@@ -16,7 +16,8 @@ Dự án API backend cho hệ thống E-Learning, tập trung vào bảo mật A
 - **Bảo mật đa lớp**:
   - **Lớp 1 (Input Validation)**: Kiểm tra dữ liệu đầu vào bằng `express-validator`.
   - **Lớp 2 (Rate Limiting)**: Giới hạn số lần đăng ký/gửi lại OTP để chống Brute-force & DDoS.
-  - **Chỉnh sửa hồ sơ cá nhân**: Cập nhật thông tin với Whitelist để bảo vệ dữ liệu nhạy cảm.
+- **Chỉnh sửa hồ sơ cá nhân**: Cập nhật thông tin với Whitelist để bảo vệ dữ liệu nhạy cảm.
+- **Bảo mật đa lớp**:
   - **Lớp 1 (Rate Limiting)**: Chống Spam & Brute-force bằng `express-rate-limit`.
   - **Lớp 2 (Input Validation)**: Làm sạch và kiểm tra tính hợp lệ của dữ liệu (chuẩn Regex) bằng `express-validator`.
 - **Kiến trúc 3 tầng (3-Layer Architecture)**: Presentation (Controller) -> Business Logic (Service) -> Data Access (Model).
