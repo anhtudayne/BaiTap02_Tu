@@ -35,6 +35,7 @@ Dự án API backend cho hệ thống E-Learning, tập trung vào bảo mật A
 | `GET`  | `/api/user/profile`  | Xem hồ sơ người dùng | JWT + Role: User |
 | `PUT`  | `/api/user/profile`  | Cập nhật hồ sơ cá nhân | Rate Limit + JWT + Role: User + Validation |
 | `GET`  | `/api/admin/profile` | Xem hồ sơ quản trị viên | JWT + Role: Admin |
+| `PUT`  | `/api/admin/profile` | Cập nhật hồ sơ quản trị viên |
 
 ## 🛠 Công nghệ sử dụng
 
