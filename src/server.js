@@ -6,6 +6,7 @@ import connectDB from './config/configdb';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
 import adminRoutes from './routes/adminRoutes';
+import productRoutes from './routes/productRoutes';
 import errorHandler from './middlewares/errorHandler';
 
 let app = express();
@@ -18,23 +19,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
     return res.status(200).json({
         status: 200,
-        message: 'E-Learning API Server đang hoạt động!',
-        endpoints: {
-            register: 'POST /api/auth/register',
-            verifyOtp: 'POST /api/auth/verify-otp',
-            resendOtp: 'POST /api/auth/resend-otp',
-        },
+        message: 'TuShoes API Server đang hoạt động!',
     });
 });
 
 app.use('/api/auth', authRoutes);
-
-
-// Placeholder for other functions
-// app.use('/api/auth', loginRoutes);
-// app.use('/api/auth', passwordRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api', productRoutes);
 
 app.use(errorHandler);
 
