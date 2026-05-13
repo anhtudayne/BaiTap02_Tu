@@ -54,3 +54,23 @@ body {
 .animate-pulse-border {
   animation: pulse-border 2s ease-in-out infinite;
 }
+
+/* Swiper custom styles */
+.product-main-swiper .swiper-button-next,
+.product-main-swiper .swiper-button-prev {
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+}
+.product-main-swiper .swiper-button-next::after,
+.product-main-swiper .swiper-button-prev::after {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.product-thumbs-swiper .swiper-slide-thumb-active > div {
+  border-color: var(--color-primary) !important;
+}
