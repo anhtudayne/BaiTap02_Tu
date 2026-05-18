@@ -80,13 +80,18 @@ export const getBestSellers = async () => {
     return { status: 200, data: products };
 };
 
-// Product detail by slug
+// Product detail by slug (tăng viewCount mỗi lần xem)
 export const getProductBySlug = async (slug) => {
     const product = await Product.findOne({
         where: { slug, isActive: true },
         include: [includeImages, includeCategory],
     });
     if (!product) return { status: 404, message: 'Không tìm thấy sản phẩm.' };
+
+    // Tăng viewCount +1
+    await product.increment('viewCount');
+    await product.reload();
+
     return { status: 200, data: product };
 };
 
@@ -111,4 +116,51 @@ export const getAllCategories = async () => {
         order: [['name', 'ASC']],
     });
     return { status: 200, data: categories };
+};
+
+// ===== API MỚI (BT05) =====
+
+// Sản phẩm theo danh mục (phân trang cho Infinite Scroll)
+export const getProductsByCategory = async (categorySlug, page = 1, limit = 8) => {
+    const category = await Category.findOne({ where: { slug: categorySlug, isActive: true } });
+    if (!category) return { status: 404, message: 'Không tìm thấy danh mục.' };
+
+    const offset = (Number(page) - 1) * Number(limit);
+    const { count, rows } = await Product.findAndCountAll({
+        where: { categoryId: category.id, isActive: true },
+        include: [includeImages, includeCategory],
+        order: [['createdAt', 'DESC']],
+        limit: Number(limit),
+        offset,
+        distinct: true,
+    });
+
+    return {
+        status: 200,
+        category: { id: category.id, name: category.name, slug: category.slug },
+        data: rows,
+        pagination: { total: count, page: Number(page), limit: Number(limit), totalPages: Math.ceil(count / Number(limit)) },
+    };
+};
+
+// Top 10 bán chạy nhất (theo soldCount)
+export const getTopBestSellers = async (limit = 10) => {
+    const products = await Product.findAll({
+        where: { isActive: true },
+        include: [includeImages, includeCategory],
+        order: [['soldCount', 'DESC']],
+        limit: Number(limit),
+    });
+    return { status: 200, data: products };
+};
+
+// Top 10 xem nhiều nhất (theo viewCount)
+export const getTopMostViewed = async (limit = 10) => {
+    const products = await Product.findAll({
+        where: { isActive: true },
+        include: [includeImages, includeCategory],
+        order: [['viewCount', 'DESC']],
+        limit: Number(limit),
+    });
+    return { status: 200, data: products };
 };

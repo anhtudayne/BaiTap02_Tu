@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 defaultValue: 0,
             },
+            viewCount: {
+                type: DataTypes.INTEGER,
+                defaultValue: 0,
+            },
             brand: DataTypes.STRING,
             sizes: {
                 type: DataTypes.JSON,

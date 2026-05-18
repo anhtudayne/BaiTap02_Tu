@@ -1,21 +1,30 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchFeatured, fetchNewArrivals, fetchBestSellers, fetchCategories } from '../store/slices/productSlice';
+import {
+  fetchFeatured, fetchNewArrivals, fetchBestSellers, fetchCategories,
+  fetchTopSellers, fetchTopViewed,
+} from '../store/slices/productSlice';
 import Navbar from '../components/Navbar';
 import HeroBanner from '../components/HeroBanner';
 import CategoryCard from '../components/CategoryCard';
 import ProductSection from '../components/ProductSection';
+import HorizontalCarousel from '../components/HorizontalCarousel';
 import Footer from '../components/Footer';
 
 export default function HomePage() {
   const dispatch = useDispatch();
-  const { featuredProducts, newArrivals, bestSellers, categories, loading } = useSelector((state) => state.product);
+  const {
+    featuredProducts, newArrivals, bestSellers, categories,
+    topSellers, topViewed, loading,
+  } = useSelector((state) => state.product);
 
   useEffect(() => {
     dispatch(fetchFeatured());
     dispatch(fetchNewArrivals());
     dispatch(fetchBestSellers());
     dispatch(fetchCategories());
+    dispatch(fetchTopSellers());
+    dispatch(fetchTopViewed());
   }, [dispatch]);
 
   return (
@@ -67,6 +76,24 @@ export default function HomePage() {
           products={bestSellers}
           linkTo="/products?sort=best_seller"
           linkText="Xem tất cả bán chạy"
+        />
+      </div>
+
+      {/* Top 10 Bán Chạy Nhất — Carousel ngang */}
+      <HorizontalCarousel
+        title="Top 10 bán chạy nhất"
+        emoji="🏅"
+        products={topSellers}
+        itemsPerPage={5}
+      />
+
+      {/* Top 10 Xem Nhiều Nhất — Carousel ngang */}
+      <div className="bg-gradient-to-b from-blue-50/50 to-gray-50">
+        <HorizontalCarousel
+          title="Top 10 xem nhiều nhất"
+          emoji="👀"
+          products={topViewed}
+          itemsPerPage={5}
         />
       </div>
 

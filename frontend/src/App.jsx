@@ -5,6 +5,7 @@ import VerifyOtpPage from './pages/VerifyOtpPage';
 import HomePage from './pages/HomePage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import SearchPage from './pages/SearchPage';
+import CategoryPage from './pages/CategoryPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -20,6 +21,7 @@ export default function App() {
       <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
       <Route path="/product/:slug" element={<ProtectedRoute><ProductDetailPage /></ProtectedRoute>} />
       <Route path="/products" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
+      <Route path="/category/:slug" element={<ProtectedRoute><CategoryPage /></ProtectedRoute>} />
       <Route path="/user/profile" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
       <Route path="/admin/profile" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
 

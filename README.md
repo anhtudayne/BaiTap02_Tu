@@ -1,11 +1,11 @@
-# Cửa hàng giày trực tuyến (Bài Tập Cá Nhân 02 & 04)
+# Cửa hàng giày trực tuyến (Bài Tập Cá Nhân 02, 04 & 05)
 
 ### 👤 Thông tin sinh viên:
 | MSSV | Họ và Tên |
 |------|-----------|
 | 23110359 | VÕ VĂN TÚ |
 
-Dự án cá nhân xây dựng website cửa hàng bán giày trực tuyến **TuShoes**, bao gồm Backend API bảo mật và Frontend giao diện hiện đại.
+Dự án cá nhân xây dựng website cửa hàng bán giày trực tuyến **TuShoes**, bao gồm Backend API bảo mật và Frontend giao diện hiện đại với lazy loading & carousel.
 
 --- 
 
@@ -21,6 +21,11 @@ Dự án cá nhân xây dựng website cửa hàng bán giày trực tuyến **T
 - **Trang chủ bán hàng**: Hero Banner, danh mục, khuyến mãi, sản phẩm mới, bán chạy nhất
 - **Trang chi tiết sản phẩm**: Swiper hình ảnh, thông tin tồn kho, chọn size/màu, tăng/giảm số lượng, sản phẩm tương tự
 - **Tìm kiếm & Lọc**: Lọc theo danh mục, thương hiệu, khoảng giá, kích cỡ + Sắp xếp + Phân trang
+
+### Chức năng nâng cao (Bài Tập 05)
+- **Trang danh mục SP**: Hiển thị tất cả SP theo danh mục, sử dụng **Infinite Scroll (Lazy Loading)** với IntersectionObserver tự load thêm khi cuộn xuống cuối trang
+- **Top 10 bán chạy nhất**: Carousel phân trang ngang (← →) hiển thị 10 SP có soldCount cao nhất
+- **Top 10 xem nhiều nhất**: Carousel phân trang ngang (← →) hiển thị 10 SP có viewCount cao nhất. viewCount tự tăng mỗi lần xem chi tiết SP
 
 ---
 
@@ -48,6 +53,13 @@ Dự án cá nhân xây dựng website cửa hàng bán giày trực tuyến **T
 | `GET` | `/api/products/:slug` | Chi tiết sản phẩm | Public |
 | `GET` | `/api/products/:id/related` | SP tương tự | Public |
 | `GET` | `/api/categories` | Danh sách danh mục | Public |
+
+### Product APIs mới (Bài Tập 05)
+| Method | Endpoint | Mô tả | Auth |
+|--------|----------|-------|------|
+| `GET` | `/api/products/category/:slug` | SP theo danh mục (phân trang) | Public |
+| `GET` | `/api/products/top-sellers` | Top 10 SP bán chạy nhất | Public |
+| `GET` | `/api/products/top-viewed` | Top 10 SP xem nhiều nhất | Public |
 
 ---
 
@@ -99,13 +111,15 @@ BaiTap02_Tu/
 │       │   ├── ImageGallery.jsx # Swiper gallery
 │       │   ├── FilterSidebar.jsx# Bộ lọc sản phẩm
 │       │   ├── Pagination.jsx   # Phân trang
+│       │   ├── HorizontalCarousel.jsx  # Carousel ngang (BT05)
 │       │   └── Footer.jsx       # Footer
 │       ├── pages/               # Các trang
 │       │   ├── LoginPage.jsx
 │       │   ├── RegisterPage.jsx
 │       │   ├── VerifyOtpPage.jsx
-│       │   ├── HomePage.jsx     # Trang chủ cửa hàng
+│       │   ├── HomePage.jsx     # Trang chủ + Top 10 carousel
 │       │   ├── ProductDetailPage.jsx
+│       │   ├── CategoryPage.jsx # SP theo danh mục + Infinite Scroll (BT05)
 │       │   └── SearchPage.jsx   # Tìm kiếm & lọc
 │       ├── store/               # Redux Toolkit
 │       │   └── slices/          # authSlice, productSlice
@@ -164,11 +178,4 @@ npm run dev
 
 ---
 
-## 🧪 Testing
-
-- File **`postman_collection.json`** — Import vào Postman để test toàn bộ Auth APIs
-- Seed data tạo sẵn **5 danh mục** và **20 sản phẩm giày** để demo giao diện
-
----
-
-*Dự án được thực hiện bởi Võ Văn Tú (23110359) — Bài Tập Cá Nhân 02 & 04*
+*Dự án được thực hiện bởi Võ Văn Tú (23110359) — Bài Tập Cá Nhân 02, 04 & 05*
