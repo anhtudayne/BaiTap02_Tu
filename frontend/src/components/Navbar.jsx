@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../store/slices/authSlice';
-import { FiSearch, FiMenu, FiX, FiUser, FiLogOut } from 'react-icons/fi';
+import { fetchCart } from '../store/slices/cartSlice';
+import { FiSearch, FiMenu, FiX, FiUser, FiLogOut, FiPackage } from 'react-icons/fi';
+import CartIcon from './CartIcon';
 
 export default function Navbar() {
   const { user } = useSelector((state) => state.auth);
@@ -10,6 +12,13 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Fetch cart khi user đăng nhập
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchCart());
+    }
+  }, [dispatch, user]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -67,6 +76,10 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             {user && (
               <div className="hidden sm:flex items-center gap-3">
+                <CartIcon />
+                <Link to="/orders" className="text-gray-600 hover:text-primary transition-colors" title="Đơn hàng của tôi">
+                  <FiPackage size={20} />
+                </Link>
                 <Link to="/user/profile" className="flex items-center gap-2 text-sm text-gray-600 hover:text-primary transition-colors">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-bold text-xs">
                     {user.firstName?.charAt(0)}
@@ -115,6 +128,12 @@ export default function Navbar() {
             ))}
             {user && (
               <>
+                <Link to="/cart" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50">
+                  <FiPackage size={15} /> Giỏ hàng
+                </Link>
+                <Link to="/orders" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50">
+                  <FiPackage size={15} /> Đơn hàng
+                </Link>
                 <Link to="/user/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50">
                   <FiUser size={15} /> Hồ sơ ({user.firstName})
                 </Link>

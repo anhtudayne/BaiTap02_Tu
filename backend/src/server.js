@@ -7,7 +7,10 @@ import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
 import adminRoutes from './routes/adminRoutes';
 import productRoutes from './routes/productRoutes';
+import cartRoutes from './routes/cartRoutes';
+import orderRoutes from './routes/orderRoutes';
 import errorHandler from './middlewares/errorHandler';
+import { checkPendingOrders } from './utils/autoConfirm';
 
 let app = express();
 
@@ -26,6 +29,8 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/orders', orderRoutes);
 app.use('/api', productRoutes);
 
 app.use(errorHandler);
@@ -37,6 +42,8 @@ const db = require('./models/index');
 db.sequelize.sync()
     .then(() => {
         console.log('Đồng bộ database thành công.');
+        // Chạy cron job/quét đơn hàng chưa xác nhận khi khởi động
+        checkPendingOrders();
     })
     .catch((err) => {
         console.error('Lỗi đồng bộ database:', err);

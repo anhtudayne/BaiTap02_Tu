@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductDetail, fetchRelatedProducts, clearProductDetail } from '../store/slices/productSlice';
-import { FiShoppingCart, FiTruck, FiShield, FiRefreshCw } from 'react-icons/fi';
+import { addToCart, fetchCart, clearCartMessage, clearCartError } from '../store/slices/cartSlice';
+import { FiShoppingCart, FiTruck, FiShield, FiRefreshCw, FiCheck } from 'react-icons/fi';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Breadcrumb from '../components/Breadcrumb';
@@ -22,6 +23,8 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const [cartError, setCartError] = useState(null);
 
   useEffect(() => {
     dispatch(fetchProductDetail(slug));
@@ -39,7 +42,36 @@ export default function ProductDetailPage() {
     setSelectedSize(null);
     setSelectedColor(null);
     setQuantity(1);
+    setAddedToCart(false);
+    setCartError(null);
   }, [slug]);
+
+  const handleAddToCart = async () => {
+    const sizes = product?.sizes || [];
+    const colors = product?.colors || [];
+    if (sizes.length > 0 && !selectedSize) {
+      setCartError('Vui lòng chọn kích cỡ');
+      return;
+    }
+    if (colors.length > 0 && !selectedColor) {
+      setCartError('Vui lòng chọn màu sắc');
+      return;
+    }
+    setCartError(null);
+    const result = await dispatch(addToCart({
+      productId: product.id,
+      quantity,
+      selectedSize,
+      selectedColor,
+    }));
+    if (result.meta.requestStatus === 'fulfilled') {
+      setAddedToCart(true);
+      dispatch(fetchCart());
+      setTimeout(() => setAddedToCart(false), 2500);
+    } else {
+      setCartError(result.payload?.message || 'Lỗi thêm vào giỏ hàng');
+    }
+  };
 
   if (loading && !product) {
     return (
@@ -218,13 +250,22 @@ export default function ProductDetailPage() {
               />
             </div>
 
+            {/* Cart error */}
+            {cartError && (
+              <p className="text-sm text-red-500 font-medium animate-shake">{cartError}</p>
+            )}
+
             {/* Add to cart button */}
             <button
-              disabled={isOutOfStock}
-              className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold text-base hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+              onClick={handleAddToCart}
+              disabled={isOutOfStock || addedToCart}
+              className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-base transition-all active:scale-[0.98] disabled:cursor-not-allowed ${
+                addedToCart
+                  ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
+                  : 'bg-gradient-to-r from-primary to-secondary text-white hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:hover:shadow-none'
+              }`}
             >
-              <FiShoppingCart size={20} />
-              {isOutOfStock ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
+              {addedToCart ? <><FiCheck size={20} /> Đã thêm vào giỏ hàng</> : <><FiShoppingCart size={20} /> {isOutOfStock ? 'Hết hàng' : 'Thêm vào giỏ hàng'}</>}
             </button>
 
             {/* Benefits */}

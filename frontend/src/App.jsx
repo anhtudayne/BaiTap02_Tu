@@ -6,6 +6,11 @@ import HomePage from './pages/HomePage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import SearchPage from './pages/SearchPage';
 import CategoryPage from './pages/CategoryPage';
+import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
+import OrdersPage from './pages/OrdersPage';
+import OrderDetailPage from './pages/OrderDetailPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -22,6 +27,11 @@ export default function App() {
       <Route path="/product/:slug" element={<ProtectedRoute><ProductDetailPage /></ProtectedRoute>} />
       <Route path="/products" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
       <Route path="/category/:slug" element={<ProtectedRoute><CategoryPage /></ProtectedRoute>} />
+      <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
+      <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+      <Route path="/order-success/:orderCode" element={<ProtectedRoute><OrderSuccessPage /></ProtectedRoute>} />
+      <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
+      <Route path="/orders/:id" element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>} />
       <Route path="/user/profile" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
       <Route path="/admin/profile" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
 
