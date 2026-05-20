@@ -18,7 +18,7 @@ Dự án cá nhân xây dựng website cửa hàng bán giày trực tuyến **T
 
 --- 
 
-## 🚀 Tính năng nổi bật
+## 🚀 Chi tiết các tính năng nổi bật
 
 ### Chức năng xác thực (Bài Tập 02)
 - **Đăng ký tài khoản**: Validation + Rate Limiting + OTP kích hoạt qua Email
